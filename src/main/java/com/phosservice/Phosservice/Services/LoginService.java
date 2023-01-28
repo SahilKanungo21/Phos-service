@@ -3,7 +3,6 @@ package com.phosservice.Phosservice.Services;
 import com.phosservice.Phosservice.Abstraction.ILoginService;
 import com.phosservice.Phosservice.Exceptions.CustomException;
 import com.phosservice.Phosservice.QueryComponent.CustomQueries;
-import com.phosservice.Phosservice.Repository.LoginDao;
 import com.phosservice.Phosservice.Repository.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginService implements ILoginService {
     Logger LOGGER = LoggerFactory.getLogger(LoginService.class);
-    @Autowired
-    private LoginDao loginDao;
     @Autowired
     private UserDao userDao;
     @Autowired
