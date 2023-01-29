@@ -2,6 +2,7 @@ package com.phosservice.Phosservice.Services;
 
 import com.phosservice.Phosservice.Abstraction.IUserGallery;
 import com.phosservice.Phosservice.Exceptions.CustomException;
+import com.phosservice.Phosservice.QueryComponent.CustomQueries;
 import com.phosservice.Phosservice.Repository.GalleryDao;
 import com.phosservice.Phosservice.Repository.UserDao;
 import com.phosservice.Phosservice.Tables.User;
@@ -30,6 +31,9 @@ public class UserGalleryServices implements IUserGallery {
 
     @Autowired
     private GalleryDao galleryDao;
+
+    @Autowired
+    private CustomQueries customQueries;
 
     @Autowired
     private UserDao userDao;
@@ -74,10 +78,36 @@ public class UserGalleryServices implements IUserGallery {
     }
 
     /**
-     *  TODO : delete the pics
+     * TODO : delete the image from db
      *  TODO : get the statistics for each user
      *  TODO : get the heartbeat for each user
      *  TODO : calculate the health status of table
      *  TODO : fetch the gallery group by userName with pagination
+     *  TODO : fetch the gallery data
      */
+
+    public String deletePhotos(String path) throws IOException {
+        byte[] image = Files.readAllBytes(Paths.get(path));
+        // write a custom query to check if it exists or not
+        WareHouse wareHouse = customQueries.checkIfImageExists(image);
+        if (wareHouse == null) {
+            throw new CustomException(path + " does not exists in db", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            galleryDao.delete(wareHouse);
+            LOGGER.info(wareHouse + "deleted successfully !!");
+        } catch (CustomException ex) {
+            LOGGER.error("deletion failed for pic {}", image);
+            throw new CustomException("Error while deleting the photos", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return null;
+    }
+
+    public List<WareHouse> getAll() {
+        try {
+            return galleryDao.findAll();
+        } catch (CustomException ex) {
+            throw new CustomException("Error while fetching the data", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

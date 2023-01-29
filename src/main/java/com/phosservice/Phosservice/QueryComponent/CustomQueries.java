@@ -2,6 +2,7 @@ package com.phosservice.Phosservice.QueryComponent;
 
 import com.phosservice.Phosservice.Exceptions.CustomException;
 import com.phosservice.Phosservice.Tables.User;
+import com.phosservice.Phosservice.Tables.WareHouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,5 +41,10 @@ public class CustomQueries {
             throw new CustomException("Error while resetting the password for user " + userName,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public WareHouse checkIfImageExists(byte[] image) {
+        String sql = "select * from user_gallery gallery where gallery.photoImage=?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{image}, WareHouse.class);
     }
 }
