@@ -3,6 +3,7 @@ package com.phosservice.Phosservice.Controller;
 
 import com.phosservice.Phosservice.Abstraction.ILoginService;
 import com.phosservice.Phosservice.Abstraction.IUserService;
+import com.phosservice.Phosservice.Controller.RequestController.LoginRequest;
 import com.phosservice.Phosservice.Exceptions.CustomException;
 import com.phosservice.Phosservice.Security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,11 @@ public class LoginController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private IUserService iUserService;
-
-
     @CrossOrigin("*")
-    @PostMapping("/signIn/{userName}/{password}")
-    public ResponseEntity<Object> login(@PathVariable("userName") String userName,
-                                        @PathVariable("password") String password) {
-        return new ResponseEntity<>(iLoginService.logIn(userName, password), HttpStatus.CREATED);
+    @PostMapping("/signIn")
+    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
+        return new ResponseEntity<>(iLoginService.logIn(loginRequest.getUserName(), loginRequest.getPassword())
+                , HttpStatus.CREATED);
     }
 
     @CrossOrigin
@@ -47,7 +44,7 @@ public class LoginController {
         try {
             return new ResponseEntity<>(jwtTokenProvider.createNewTokenFromExistingToken(token), HttpStatus.OK);
         } catch (CustomException ex) {
-            throw new CustomException(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
