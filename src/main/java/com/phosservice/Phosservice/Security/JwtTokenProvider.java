@@ -107,5 +107,11 @@ public class JwtTokenProvider {
         return new SqlUserDetails(userName, authMail, fullName);
     }
 
+    public String createNewTokenFromExistingToken(String token) {
+        String userName = getUserName(token);
+        String fullName = getFullName(token);
+        return createJwtToken(userName,fullName);
+    }
+
 
 }
