@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Data
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "JwtToken", schema = "jwt-schema")
-public class JwtToken {
+public class JwtToken implements Serializable {
     @Id
     private String token;
 }

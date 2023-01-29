@@ -37,14 +37,11 @@ public class LoginService implements ILoginService {
     private JwtTokenDao jwtTokenDao;
 
     public String logIn(String userName, String password) {
-        User user = userDao.existsById(userName) ? userDao.findById(userName).get() : null;
+        User user = userDao.findById(userName).orElse(null);
         if (user != null && user.getPassword().equals(password)) {
             try {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
                 LOGGER.info("Successfully Logged In {}", userName);
-                /**
-                 * TODO : get the authentication User
-                 */
                 String token = jwtTokenProvider.createJwtToken(userName, user.getName());
                 LOGGER.info("Successfully log in , user = {} ", user);
                 return token;

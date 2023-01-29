@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GalleryDao extends JpaRepository<WareHouse,String> {
+public interface GalleryDao extends JpaRepository<WareHouse, Long> {
 }

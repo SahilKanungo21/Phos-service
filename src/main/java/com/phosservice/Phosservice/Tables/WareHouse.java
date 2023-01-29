@@ -4,8 +4,10 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Data
@@ -14,9 +16,12 @@ import java.util.Set;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "User-Gallery", schema = "gallery-schema")
-public class WareHouse {
+@Table(name = "UserGallery", schema = "gallery-schema")
+public class WareHouse implements Serializable {
     @Id
+    Long photoId;
+    @Lob
+    byte[] photoImage;
     String userName;
-    Set<Integer> photoIds;
+    Date createdPic;
 }
