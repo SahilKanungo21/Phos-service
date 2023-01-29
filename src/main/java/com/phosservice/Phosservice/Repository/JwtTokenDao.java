@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JwtTokenDao extends JpaRepository<JwtToken,String> {
+public interface JwtTokenDao extends JpaRepository<JwtToken, String> {
 }

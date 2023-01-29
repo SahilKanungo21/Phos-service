@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestScopeContext {
-    private String userName ;
+    private String userName;
 
 }

@@ -110,7 +110,7 @@ public class JwtTokenProvider {
     public String createNewTokenFromExistingToken(String token) {
         String userName = getUserName(token);
         String fullName = getFullName(token);
-        return createJwtToken(userName,fullName);
+        return createJwtToken(userName, fullName);
     }
 
 

@@ -29,7 +29,7 @@ public class SqlUserDetails implements UserDetails {
 
     private List<GrantedAuthority> grantedAuthorities;
 
-    public SqlUserDetails(String username,String authorities, String fullName) {
+    public SqlUserDetails(String username, String authorities, String fullName) {
         this.username = username;
         this.fullName = fullName;
         this.grantedAuthorities = AuthorityUtils.createAuthorityList(authorities);

@@ -37,7 +37,7 @@ public class LoginService implements ILoginService {
     private JwtTokenDao jwtTokenDao;
 
     public String logIn(String userName, String password) {
-        User user = userDao.existsById(userName) ? userDao.findById(userName).get():null;
+        User user = userDao.existsById(userName) ? userDao.findById(userName).get() : null;
         if (user != null && user.getPassword().equals(password)) {
             try {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
@@ -45,23 +45,23 @@ public class LoginService implements ILoginService {
                 /**
                  * TODO : get the authentication User
                  */
-                String token = jwtTokenProvider.createJwtToken(userName,user.getName());
-                LOGGER.info("Successfully log in , user = {} ",user);
+                String token = jwtTokenProvider.createJwtToken(userName, user.getName());
+                LOGGER.info("Successfully log in , user = {} ", user);
                 return token;
-            }catch (AuthenticationException ex) {
-                throw new CustomException("invalid username or password. ",HttpStatus.UNAUTHORIZED);
+            } catch (AuthenticationException ex) {
+                throw new CustomException("invalid username or password. ", HttpStatus.UNAUTHORIZED);
             }
         }
         throw new CustomException("Invalid User name or Password", HttpStatus.FORBIDDEN);
     }
 
-    public String logOut(String token){
+    public String logOut(String token) {
         try {
             jwtTokenDao.delete(new JwtToken(token));
-            LOGGER.info("Successfully Logged out . token {} ",token);
+            LOGGER.info("Successfully Logged out . token {} ", token);
             return "Successfully logged out";
-        }catch (CustomException ex) {
-            throw new CustomException("Error while Logging Out ",HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (CustomException ex) {
+            throw new CustomException("Error while Logging Out ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

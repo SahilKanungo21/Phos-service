@@ -107,28 +107,27 @@ public class UserService implements IUserService, UserDetailsService {
     public String resetPassword(String updatedPassword) {
         String me = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
-            if(customQueries.updateUserPassword(me,updatedPassword) > 0 ){
+            if (customQueries.updateUserPassword(me, updatedPassword) > 0) {
                 return "Password reset successfully  !!!";
             }
+        } catch (CustomException ex) {
+            throw new CustomException("Error while reseting the password {} " + me, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        catch (CustomException ex){
-            throw new CustomException("Error while reseting the password {} "+me,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        throw new ValidationException("Failed !! Try Again",HttpStatus.BAD_REQUEST);
+        throw new ValidationException("Failed !! Try Again", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.existsById(username )? userDao.findById(username).get() : null;
+        User user = userDao.existsById(username) ? userDao.findById(username).get() : null;
 
-        if(user == null ) {
-            throw new CustomException("Invalid user name or password",HttpStatus.UNAUTHORIZED);
+        if (user == null) {
+            throw new CustomException("Invalid user name or password", HttpStatus.UNAUTHORIZED);
         }
 
-        SqlUserDetails sqlUserDetails = new SqlUserDetails(user.getUserName(),user.getPassword(),user.getName()
-        ,true,false,false,true,
+        SqlUserDetails sqlUserDetails = new SqlUserDetails(user.getUserName(), user.getPassword(), user.getName()
+                , true, false, false, true,
                 AuthorityUtils.createAuthorityList(user.getUserName()));
-        LOGGER.info("Successfully loaded user by username {} ",sqlUserDetails);
+        LOGGER.info("Successfully loaded user by username {} ", sqlUserDetails);
         return sqlUserDetails;
     }
 }
