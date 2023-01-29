@@ -9,13 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements IUserService , UserDetailsService {
     Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserDao userDao;
@@ -83,6 +86,11 @@ public class UserService implements IUserService {
 
         }
         throw new CustomException(user + "does Not Exists in Db ", HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 
     /**
