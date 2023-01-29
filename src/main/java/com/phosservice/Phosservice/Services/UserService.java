@@ -74,7 +74,6 @@ public class UserService implements IUserService , UserDetailsService {
     }
 
     public String updateUser(User user) {
-
         if (userDao.existsById(user.getUserName())) {
             try {
                 if (customQueries.updateUserDetails(user) > 0) {
@@ -83,7 +82,6 @@ public class UserService implements IUserService , UserDetailsService {
             } catch (CustomException ex) {
                 throw new CustomException(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
         }
         throw new CustomException(user + "does Not Exists in Db ", HttpStatus.BAD_REQUEST);
     }
@@ -92,9 +90,6 @@ public class UserService implements IUserService , UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }
-
-    /**
-     * TODO : develop a new api for reset User password
-     * /
-
 }
+
+
