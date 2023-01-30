@@ -79,9 +79,6 @@ public class UserGalleryServices implements IUserGallery {
 
     /**
      * TODO : delete the image from db
-     *  TODO : get the statistics for each user
-     *  TODO : get the heartbeat for each user
-     *  TODO : calculate the health status of table
      *  TODO : fetch the gallery group by userName with pagination
      *  TODO : fetch the gallery data
      */

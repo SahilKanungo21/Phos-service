@@ -1,14 +1,22 @@
 package com.phosservice.Phosservice.QueryComponent;
 
 import com.phosservice.Phosservice.Exceptions.CustomException;
+import com.phosservice.Phosservice.Monitoring.HealthCollections.TableHealth;
 import com.phosservice.Phosservice.Tables.User;
 import com.phosservice.Phosservice.Tables.WareHouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class CustomQueries {
@@ -46,5 +54,21 @@ public class CustomQueries {
     public WareHouse checkIfImageExists(byte[] image) {
         String sql = "select * from user_gallery gallery where gallery.photoImage=?";
         return jdbcTemplate.queryForObject(sql, new Object[]{image}, WareHouse.class);
+    }
+
+    String value = " \"ROM\" ";
+
+    public List<TableHealth> getTableHealthCheck(){
+        String sql = "SELECT table_name, round(((data_length + index_length) / 1024 / 1024), 2) 'size (MB)' " +
+                "FROM information_schema.TABLES WHERE table_schema = \"phos-services\" ;";
+        return jdbcTemplate.query(sql, new RowMapper<TableHealth>() {
+            public TableHealth mapRow(ResultSet rs, int rowNum) throws SQLException {
+                //tableHealthReport.putIfAbsent(rs.)
+                TableHealth tableHealth = new TableHealth();
+                tableHealth.setTableName(rs.getString(1));
+                tableHealth.setMemoryConsumption(rs.getLong(2));
+                return tableHealth;
+            }
+        });
     }
 }

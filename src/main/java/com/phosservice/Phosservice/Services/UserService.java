@@ -70,8 +70,6 @@ public class UserService implements IUserService, UserDetailsService {
         user.setUpdatedDate(new Date());
         try {
             userDao.save(user);
-            // saved the jwt token for this user
-
             LOGGER.info("Successfully saved the user {}", user);
         } catch (CustomException ex) {
             LOGGER.error("Error while saving new user {} to Db", user);

@@ -1,8 +1,6 @@
 package com.phosservice.Phosservice.Controller;
 
-
 import com.phosservice.Phosservice.Abstraction.ILoginService;
-import com.phosservice.Phosservice.Abstraction.IUserService;
 import com.phosservice.Phosservice.Controller.RequestController.LoginRequest;
 import com.phosservice.Phosservice.Exceptions.CustomException;
 import com.phosservice.Phosservice.Security.JwtTokenProvider;
