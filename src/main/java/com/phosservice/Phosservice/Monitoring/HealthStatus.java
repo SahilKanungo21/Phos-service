@@ -21,7 +21,6 @@ public class HealthStatus {
     /**
      *  TODO: SCALE DB BASED ON MEMORY
      *  TODO : get the statistics for each user
-     *  TODO : get the heartbeat for each user
      */
     //get the table health every day at 10 pm
     public Map<String, Long> getTableHealthReport() {
@@ -38,7 +37,6 @@ public class HealthStatus {
         return tableHealthData;
     }
 
-    // find out the users who are not active for 30 days
     public List<String> getInActiveUserListFromUserDB() {
         List<String> getInActiveUserList = customQueries.getInActiveUserList();
         if(getInActiveUserList==null || getInActiveUserList.isEmpty()) {

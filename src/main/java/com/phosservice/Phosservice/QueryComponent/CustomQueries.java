@@ -56,6 +56,16 @@ public class CustomQueries {
         }
     }
 
+    public String deleteInActiveUser(String userName) {
+        String deleteUser = "delete * from UserGallery gallery where gallery.userName = ?;";
+        try {
+            return jdbcTemplate.queryForObject(deleteUser, new Object[]{userName},String.class);
+        } catch (CustomException ex) {
+            throw new CustomException("Error while resetting the password for user " + userName,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public List<String> getInActiveUserList() {
         String getInActiveUserList = "SELECT user.user_name\n" +
                 "FROM User user\n" +
