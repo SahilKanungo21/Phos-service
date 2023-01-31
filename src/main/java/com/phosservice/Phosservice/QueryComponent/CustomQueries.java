@@ -28,6 +28,11 @@ public class CustomQueries {
         return jdbcTemplate.queryForObject(sql, new Object[]{userName}, String.class);
     }
 
+    public String getLoginCountForUser(String userName) {
+        String sql = "select user.loginCount from User user where user.userName=?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{userName}, String.class);
+    }
+
     public long updateUserDetails(User userobj) {
         Date updatedDate = new Date();
         String sql = "update User user set user.password=?," +
@@ -47,6 +52,32 @@ public class CustomQueries {
             return jdbcTemplate.update(resetPassword, new Object[]{password, userName});
         } catch (CustomException ex) {
             throw new CustomException("Error while resetting the password for user " + userName,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public List<String> getInActiveUserList() {
+        String getInActiveUserList = "SELECT user.user_name\n" +
+                "FROM User user\n" +
+                "WHERE user.updated_date < DATE_SUB(NOW(), INTERVAL 30 DAY);";
+
+        return jdbcTemplate.query(getInActiveUserList, new RowMapper<String>() {
+            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                //tableHealthReport.putIfAbsent(rs.)
+                return rs.getString(1);
+            }
+        });
+
+    }
+
+    public long updateLoginCount(int loginCount , String userName) {
+        Date updatedDate = new Date();
+        String updateLoginCount = "update User user set user.loginCount = ? , user.updatedDate = "+ updatedDate+
+                " where user.userName = ? ;";
+        try {
+            return jdbcTemplate.update(updateLoginCount, new Object[]{loginCount, userName});
+        } catch (CustomException ex) {
+            throw new CustomException("Error while updating the login count for user " + userName,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -24,4 +24,5 @@ public class WareHouse implements Serializable {
     byte[] photoImage;
     String userName;
     Date createdPic;
+
 }

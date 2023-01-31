@@ -41,6 +41,11 @@ public class LoginService implements ILoginService {
         if (user != null && user.getPassword().equals(password)) {
             try {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+                int fetchLoginCountForUser = Integer.parseInt(customQueries.getLoginCountForUser(userName));
+                if (customQueries.updateLoginCount(fetchLoginCountForUser + 1, userName) <= 0) {
+                    throw new CustomException("Error while updating the user", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                LOGGER.info("updated login count for user");
                 LOGGER.info("Successfully Logged In {}", userName);
                 String token = jwtTokenProvider.createJwtToken(userName, user.getName());
                 LOGGER.info("Successfully log in , user = {} ", user);

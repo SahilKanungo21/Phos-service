@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,12 @@ public class HealthStatus {
     }
 
     // find out the users who are not active for 30 days
-    public List<String> getInActiveUserListFromGalleryDb() {
-        return null;
+    public List<String> getInActiveUserListFromUserDB() {
+        List<String> getInActiveUserList = customQueries.getInActiveUserList();
+        if(getInActiveUserList==null || getInActiveUserList.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return getInActiveUserList;
     }
+
 }

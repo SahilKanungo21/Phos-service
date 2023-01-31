@@ -23,4 +23,5 @@ public class User implements Serializable {
     String name;
     Date createdDate;
     Date updatedDate;
+    int loginCount;
 }
